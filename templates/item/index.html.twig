@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Todo list{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% if items is defined %}
+        <table id="item-table" class="table table-striped item-table">
+            <thead>
+                <tr>
+                    <th>Todo</th>
+                    <th>Status</th>
+                    <th>Completed At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.completedStatus }}</td>
+                        <td>{{ item.completedAtDate }}</td>
+                        <td>
+                            {% if(item.completed) %}
+                                <a class="btn btn-info">Completed</a>
+                            {% else %}
+                                <a href="{{ path('items.update', {id: item.id}) }}" class="btn btn-success">Complete</a>
+                            {% endif %}
+                            <a href="#" class="btn btn-danger delete-item" data-id="{{ item.id }}">Remove</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h3>No items to display</h3>
+    {% endif %}
+
+    <script src="{{ asset('js/main.js') }}"></script>
+{% endblock %}
